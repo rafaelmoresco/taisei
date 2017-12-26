@@ -25,8 +25,11 @@ Dialog *stage2_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage2(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage2(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
 
 	dadd_msg(d, BGM, "stage2boss");
@@ -44,8 +47,11 @@ Dialog *stage2_post_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage2_post(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage2_post(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
 
 	return d;

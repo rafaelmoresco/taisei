@@ -25,11 +25,14 @@ static Dialog *stage3_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage3(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage3(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
-	dadd_msg(d, BGM, "stage3boss");
 
+	dadd_msg(d, BGM, "stage3boss");
 	return d;
 }
 
@@ -44,12 +47,14 @@ static Dialog *stage3_post_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage3_post(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage3_post(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
-	
-	return d;
 
+	return d;
 }
 
 static int stage3_enterswirl(Enemy *e, int t) {

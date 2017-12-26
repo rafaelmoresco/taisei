@@ -25,9 +25,13 @@ Dialog *stage6_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage6(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage6(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
+
 	dadd_msg(d, BGM, "stage6boss_phase1");
 	return d;
 }
@@ -43,8 +47,11 @@ static Dialog *stage6_interboss_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage6_inter(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage6_inter(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
 
 	return d;

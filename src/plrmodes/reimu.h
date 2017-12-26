@@ -9,6 +9,8 @@
 #pragma once
 #include "taisei.h"
 
-#include "reimu.h"
-#include "marisa.h"
-#include "youmu.h"
+#include "plrmodes.h"
+
+extern PlayerCharacter character_reimu;
+extern PlayerMode plrmode_reimu_a;
+extern PlayerMode plrmode_reimu_b;

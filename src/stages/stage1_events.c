@@ -17,19 +17,21 @@ Dialog *stage1_dialog(void) {
 	PlayerCharacter *pc = global.plr.mode->character;
 	Dialog *d = create_dialog(pc->dialog_sprite_name, "dialog/cirno");
 
-        switch(pc->id) {
+	switch(pc->id) {
 	case PLR_CHAR_MARISA:
 		dialog_marisa_stage1(d);
 		break;
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage1(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage1(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
 
 	dadd_msg(d, BGM, "stage1boss");
-
 	return d;
 }
 
@@ -44,8 +46,11 @@ static Dialog *stage1_postdialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage1_post(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage1_post(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
 
 	return d;

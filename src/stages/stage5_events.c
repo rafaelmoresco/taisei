@@ -24,15 +24,19 @@ Dialog *stage5_post_mid_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage5_mid(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage5_mid(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
 
 	if(d->count != 1) {
-    		log_fatal("The stage 5 midboss dialog can only contain one line");
+		log_fatal("The stage 5 midboss dialog should contain just one page");
 	}
 	
 	DialogMessage *m = &d->messages[0];
+	assert(m != NULL);
 	m->timeout = global.frames + 120;
 
 	return d;
@@ -49,8 +53,11 @@ Dialog *stage5_boss_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage5(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage5(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
 
 	dadd_msg(d, BGM, "stage5boss");
@@ -68,8 +75,11 @@ Dialog *stage5_post_boss_dialog(void) {
 	case PLR_CHAR_YOUMU:
 		dialog_youmu_stage5_post(d);
 		break;
+	case PLR_CHAR_REIMU:
+		dialog_reimu_stage5_post(d);
+		break;
 	default:
-    		log_warn("No dialog available for this character.");		
+		log_warn("No dialog available for this character.");
 	}
 
 	return d;
