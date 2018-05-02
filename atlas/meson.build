@@ -5,6 +5,7 @@ resources_gfx_dir = join_paths(resources_dir, 'gfx')
 
 atlases = [
     'common',
+    'reimu',
 ]
 
 atlas_common_args = [
