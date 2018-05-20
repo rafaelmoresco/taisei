@@ -223,7 +223,81 @@ bool player_should_shoot(Player *plr, bool extra) {
 			(!extra || (global.frames - plr->recovery >= 0 && plr->deathtime >= -1));
 }
 
+void player_damage_entity(Player *plr, EntityInterface *ent, int dmg, PlrShotHitFlags hflags) {
+	assert(dmg > 0);
+	hflags &= HITFLAG_BOMB;
+
+	switch(ent->type) {
+		case ENT_BOSS: {
+			Boss *boss = ENT_CAST(ent, Boss);
+
+			if(boss_damage(boss, dmg)) {
+				hflags |= HITFLAG_BOSS;
+				assert(boss->current != NULL);
+
+				if(boss->current->hp < boss->current->maxhp * 0.1) {
+					hflags |= HITFLAG_LOWHP;
+				}
+
+				if(boss->current->hp <= 0) {
+					hflags |= HITFLAG_FATAL;
+				}
+
+				if(!(hflags & HITFLAG_BOMB)) {
+					player_add_points(plr, dmg * 0.2);
+				}
+
+				player_register_damage(plr, dmg, hflags);
+			}
+
+			break;
+		}
+
+		case ENT_ENEMY: {
+			hflags |= HITFLAG_ENEMY;
+			Enemy *enemy = ENT_CAST(ent, Enemy);
+
+			// assert(enemy->hp > 0);
+			if(enemy->hp <= 0) {
+				log_debug("BUG: player_damage_entity on enemy with hp == %i, debug this", enemy->hp);
+				break;
+			}
+
+			if(!(hflags & HITFLAG_BOMB)) {
+				player_add_points(plr, dmg * 0.5);
+			}
+
+			enemy->hp -= dmg;
+
+			if(enemy->hp < enemy->spawn_hp * 0.1) {
+				hflags |= HITFLAG_LOWHP;
+			}
+
+			if(enemy->hp <= 0) {
+				hflags |= HITFLAG_FATAL;
+			}
+
+			player_register_damage(plr, dmg, hflags);
+			break;
+		}
+
+		default: UNREACHABLE;
+	}
+}
+
 void player_logic(Player* plr) {
+	if(plr->lastframe_hitflags) {
+		if(!(plr->lastframe_hitflags & HITFLAG_BOMB) && (plr->lastframe_hitflags & (HITFLAG_BOSS | HITFLAG_ENEMY))) {
+			if(plr->lastframe_hitflags & HITFLAG_LOWHP) {
+				play_loop("hit1");
+			} else {
+				play_loop("hit0");
+			}
+		}
+
+		plr->lastframe_hitflags = 0;
+	}
+
 	if(plr->continuetime == global.frames) {
 		plr->lives = PLR_START_LIVES;
 		plr->bombs = PLR_START_BOMBS;
@@ -966,7 +1040,7 @@ void player_add_points(Player *plr, uint points) {
 	}
 }
 
-void player_register_damage(Player *plr, int damage) {
+void player_register_damage(Player *plr, int damage, PlrShotHitFlags hitflags) {
 #ifdef PLR_DPS_STATS
 	while(global.frames > plr->dmglogframe) {
 		memmove(plr->dmglog + 1, plr->dmglog, sizeof(plr->dmglog) - sizeof(*plr->dmglog));
@@ -976,6 +1050,10 @@ void player_register_damage(Player *plr, int damage) {
 
 	plr->dmglog[0] += damage;
 #endif
+
+	if(!(hitflags & HITFLAG_BOMB)) {
+		plr->lastframe_hitflags |= hitflags;
+	}
 }
 
 void player_preload(void) {
@@ -1002,5 +1080,7 @@ void player_preload(void) {
 		"full_power",
 		"extra_life",
 		"extra_bomb",
+		"hit0",
+		"hit1",
 	NULL);
 }

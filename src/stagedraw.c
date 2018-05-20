@@ -679,7 +679,7 @@ void stage_draw_hud_text(struct labels_s* labels) {
 		}
 
 		// hack to update the graph every frame
-		player_register_damage(&global.plr, 0);
+		player_register_damage(&global.plr, 0, 0);
 
 		for(int i = 0; i < framespan; ++i) {
 			totaldmg += global.plr.dmglog[i];

@@ -412,19 +412,9 @@ void apply_projectile_collision(Projectile **projlist, Projectile *p, ProjCollis
 			break;
 		}
 
-		case PCOL_ENEMY: {
-			Enemy *e = col->entity;
-			player_add_points(&global.plr, col->damage * 0.5);
-			player_register_damage(&global.plr, col->damage);
-			e->hp -= col->damage;
-			break;
-		}
-
+		case PCOL_ENEMY:
 		case PCOL_BOSS: {
-			if(boss_damage(col->entity, col->damage)) {
-				player_add_points(&global.plr, col->damage * 0.2);
-				player_register_damage(&global.plr, col->damage);
-			}
+			player_damage_entity(&global.plr, col->entity, col->damage, 0);
 			break;
 		}
 

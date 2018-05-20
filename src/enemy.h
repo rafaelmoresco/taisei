@@ -42,6 +42,7 @@ struct Enemy {
 	EnemyVisualRule visual_rule;
 
 	int hp;
+	int spawn_hp;
 
 	complex args[RULE_ARGC];
 	float alpha;

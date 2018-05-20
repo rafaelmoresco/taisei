@@ -58,6 +58,14 @@ enum {
 
 typedef struct Player Player;
 
+typedef enum PlrShotHitFlags {
+	HITFLAG_ENEMY = (1 << 0),
+	HITFLAG_BOSS  = (1 << 1),
+	HITFLAG_LOWHP = (1 << 2),
+	HITFLAG_BOMB  = (1 << 3),
+	HITFLAG_FATAL = (1 << 4),
+} PlrShotHitFlags;
+
 struct Player {
 	ENTITY_INTERFACE_NAMED(Player, ent);
 
@@ -97,6 +105,8 @@ struct Player {
 	int axis_lr;
 
 	bool iddqd;
+
+	PlrShotHitFlags lastframe_hitflags;
 
 #ifdef PLR_DPS_STATS
 	int dmglogframe;
@@ -155,7 +165,8 @@ void player_add_lives(Player *plr, int lives);
 void player_add_bombs(Player *plr, int bombs);
 void player_add_points(Player *plr, uint points);
 
-void player_register_damage(Player *plr, int dmg);
+void player_damage_entity(Player *plr, EntityInterface *ent, int dmg, PlrShotHitFlags hflags);
+void player_register_damage(Player *plr, int dmg, PlrShotHitFlags hitflags);
 
 void player_cancel_bomb(Player *plr, int delay);
 

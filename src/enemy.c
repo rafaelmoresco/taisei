@@ -48,7 +48,7 @@ Enemy *create_enemy_p(Enemy **enemies, complex pos, int hp, EnemyVisualRule visu
 	e->pos = pos;
 	e->pos0 = pos;
 
-	e->hp = hp;
+	e->hp = e->spawn_hp = hp;
 	e->alpha = 1.0;
 
 	e->logic_rule = logic_rule;

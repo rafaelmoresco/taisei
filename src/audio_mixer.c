@@ -373,7 +373,6 @@ bool audio_backend_sound_stop_loop(void *impl) {
 	Mix_HaltChannel(snd->loopchan);
 
 	return true;
-
 }
 
 bool audio_backend_sound_pause_all(AudioBackendSoundGroup group) {
